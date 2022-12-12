@@ -28,8 +28,12 @@ with open("files/input_11.txt", "r") as file_stream:
             'false': false_case,
         }
 
+factor = 1
+for monkey in monkeys.values():
+    factor *= monkey['test']
+
 active = dict()
-for r in range(1000):
+for r in range(20):
     for key in monkeys.keys():
         value = monkeys[key]
         if key not in active.keys():
@@ -41,7 +45,7 @@ for r in range(1000):
             item = value['items'].pop(0)
             worry_level = value['operation'](item)
             thrown_to = value['true'] if worry_level % value['test'] == 0 else value['false']
-            monkeys[thrown_to]['items'].append(worry_level)
+            monkeys[thrown_to]['items'].append(worry_level % factor)
 
 print(active)
 num1, num2 = sorted(active.values())[-2:]

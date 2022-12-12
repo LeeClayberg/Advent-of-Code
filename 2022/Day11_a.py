@@ -45,10 +45,6 @@ for r in range(20):
             thrown_to = value['true'] if bored % value['test'] == 0 else value['false']
             monkeys[thrown_to]['items'].append(bored)
 
-        print(r+1)
-        for m, monkey in monkeys.items():
-            print(f'  Monkey{m}: {",".join([str(j) for j in monkey["items"]])}')
-
 num1, num2 = sorted(active.values())[-2:]
 print(num1 * num2)
 
