@@ -14,32 +14,6 @@ with open("files/input_16.txt", "r") as file_stream:
         flows[valve] = flow
         tunnels[valve] = options
 
-# memo = dict()
-# for key in flows.keys():
-#     memo[key] = dict()
-#
-# minute_options = dict()
-#
-#
-# def test(current, minute):
-#     if minute == 30:
-#         return 1
-#     else:
-#         total = 0
-#         if minute not in minute_options.keys():
-#             minute_options[minute] = []
-#         minute_options[minute].append([(current, t) for t in tunnels[current]])
-#         for nex in tunnels[current]:
-#             if (minute + 1) in memo[nex]:
-#                 total += memo[nex][minute + 1]
-#             else:
-#                 test_total = test(nex, minute + 1)
-#                 memo[nex][minute + 1] = test_total
-#                 total += test_total
-#         return total
-#
-# print(test('AA', 0))
-
 memo = dict()
 for key in flows.keys():
     memo[key] = dict()
@@ -55,7 +29,7 @@ def max_path(current, minute, valves):
             if key_valves not in memo[nex][minute + 1].keys():
                 memo[nex][minute + 1][key_valves] = max_path(nex, minute+1, valves)
             maxes.append(memo[nex][minute + 1][key_valves])
-        if minute + 2 <= 30 and current not in valves:
+        if minute + 2 <= 30 and current not in valves and flows[current] != 0:
             calc_flow = flows[current] * (30 - minute - 1)
             new_valves = valves.copy()
             new_valves.add(current)
