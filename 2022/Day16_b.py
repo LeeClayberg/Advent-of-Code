@@ -29,7 +29,6 @@ def max_path(current, minute, valves):
     maxes = []
     for me_next in tunnels[me]:
         elephant_tunnels = [tun for tun in tunnels[elephant] if tun != me_next]
-        for elephant_next in elephant_tunnels:
 
 
     return max(maxes) if len(maxes) > 0 else 0
