@@ -5,8 +5,8 @@ with open("files/day02.txt", "r") as file_stream:
 
     total = 0
     for line in lines:
-        id, sets = line.split(': ')
-        id = int(id.split(' ')[1])
+        game, sets = line.split(': ')
+        game = int(game.split(' ')[1])
         sets = sets.split('; ')
 
         check = True
@@ -18,9 +18,7 @@ with open("files/day02.txt", "r") as file_stream:
                 num, color = group.split(' ')
                 if bag[color] < int(num):
                     bag[color] = int(num)
-        print(bag)
         power = bag['red'] * bag['green'] * bag['blue']
-        print(power)
         total += power
     print(total)
 
