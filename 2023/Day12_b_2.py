@@ -32,31 +32,27 @@ for line in lines:
         idx = possible[group_idx][0][1] + 1
         group_idx += 1
 
-    possible = sorted(possible, key=(lambda x: x[0][1] - x[0][0]), reverse=True)
-
     print(possible)
 
-    for i in range(0, len(possible)):
-        group = possible[i]
+    possible = sorted(possible, key=(lambda x: len(x)))
+
+    for p in range(0, len(possible)):
+        group = possible[p]
         for r in group:
             if set(record[r[0]:r[1]]) == {'#'}:
-                possible[i] = [r]
+                possible[p] = [r]
                 break
-
-        group = possible[i]
-        for j in range(i+1, len(possible)):
-            later_group = possible[j]
-
-            later_group_filtered = set()
-            for item in later_group:
-                check = True
-                for item_first in group:
-                    if len(set(range(item_first[0], item_first[1])).intersection(set(range(item[0], item[1])))) > 0:
-                        check = False
-                if check:
-                    later_group_filtered.add(item)
-            possible[j] = list(later_group_filtered)
-
+        if len(possible[p]) == 1:
+            for option in group:
+                for o, other_group in enumerate(possible[p+1:]):
+                    other_option_idx = 0
+                    while other_option_idx < len(other_group):
+                        other_option = other_group[other_option_idx]
+                        full_option_space = range(option[0]-1, option[1]+1)
+                        check1 = other_option[0] in full_option_space
+                        check2 = other_option[1]-1 in full_option_space
+                        if check1 or check2:
+                            other_group.remove(other_option)
+                        else:
+                            other_option_idx += 1
     print(possible)
-    lengths = [len(p) for p in possible]
-
