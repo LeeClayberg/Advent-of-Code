@@ -11,6 +11,7 @@ for line in lines:
 
     record = list(record)
     spots = record.count('?')
+    sub_total = 0
     for a in range(0, pow(2, spots)):
         symbols = bin(a)[2:]
         symbols = ''.join(['0' for _ in range(0, spots-len(symbols))]) + symbols
@@ -27,5 +28,6 @@ for line in lines:
         new_record = re.sub('[.]+', '.', new_record)
         parts = [len(part) for part in new_record.split('.') if len(part) > 0]
         if parts == counts:
-            total += 1
+            sub_total += 1
+    total += sub_total
 print(total)
