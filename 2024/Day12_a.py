@@ -1,27 +1,41 @@
 
 # Read in stuff
-with open("files/day11.txt", "r") as file_stream:
-    line = file_stream.read()
-    stones = [int(s) for s in line[:-1].split(' ')]
-    blinks = 25
+with open("files/day12.txt", "r") as file_stream:
+    lines = file_stream.readlines()
+    farm = [[c for c in line[:-1]] for line in lines]
 
-    for _ in range(0, blinks):
-        i = 0
-        while i < len(stones):
-            curr_stone = stones[i]
-            if curr_stone == 0:
-                stones[i] = 1
-            elif len(str(curr_stone)) % 2 == 0:
-                str_stone = str(curr_stone)
-                len_stone = len(str_stone)
-                left, right = str_stone[:len_stone // 2], str_stone[len_stone // 2:]
-                stones[i] = int(left)
-                i += 1
-                stones.insert(i, int(right))
-            else:
-                stones[i] *= 2024
-            i += 1
-    print(len(stones))
+    # Calculate regions
+    regions = []
+    seen = set()
+    for y, row in enumerate(farm):
+        for x, plot in enumerate(row):
+            position = (x, y)
+            if position in seen:
+                continue
+            region = set()
+            queue = [position]
+            while len(queue) > 0:
+                cx, cy = queue.pop(0)
+                if (cx, cy) in region:
+                    continue
+                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nx, ny = cx + dx, cy + dy
+                    if 0 <= nx < len(farm[0]) and 0 <= ny < len(farm) and farm[ny][nx] == plot:
+                        queue.append((nx, ny))
+                region.add((cx, cy))
+                seen.add((cx, cy))
+            regions.append(region)
 
-
-
+    # Find fencing
+    total = 0
+    for region in regions:
+        perimeter = 0
+        for x, y in region:
+            sides = 4
+            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < len(farm[0]) and 0 <= ny < len(farm) and farm[ny][nx] == farm[y][x]:
+                    sides -= 1
+            perimeter += sides
+        total += perimeter * len(region)
+    print(total)
